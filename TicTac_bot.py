@@ -142,6 +142,17 @@ class Bot:
         else:
             return self.willWin(pos, 'O')
 
+    def __onewin(self, pos, n):
+        if pos[0] != '-':
+            return False
+        pos[0] = 'X' if n == 'O' else 'O'
+        if x.sys_gameOver(pos):
+            pos[0] = '-'
+            return True
+        else:
+            pos[0] = '-'
+            return False
+
     def bot_move(self, pos, n, mode):
         if self.isEmpty(pos):
             pos[corners[randint(0,3)]] = n
@@ -150,6 +161,10 @@ class Bot:
         elif self.__wilbotwin(pos, n):
             c = self.__wilbotwin(pos, n)
             pos[c] = n
+            return pos
+
+        elif self.__onewin(pos, n):
+            pos[0] = n
             return pos
 
         elif self.willWin(pos, n):
